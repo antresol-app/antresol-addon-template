@@ -1,0 +1,34 @@
+# A tag v<version> (the version in antresol-addon.json) builds the release:
+# one archive per platform, the web part and antresol-addon.json, attached to
+# the tag's GitHub release. The core installs the latest release by the
+# repository's URL.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # the addon SDK (web/addon-sdk) of the core
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: antresol-app/antresol
+          path: antresol-core
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: antresol-core/.nvmrc
+      - run: npm --prefix antresol-core/web ci
+      - run: make build ANTRESOL_CORE=antresol-core TAG="$GITHUB_REF_NAME"
+      - run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --notes ""
+        env:
+          GH_TOKEN: ${{ github.token }}

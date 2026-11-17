@@ -1,0 +1,11 @@
+{
+  "id": "template",
+  "name": { "ru": "Шаблон", "en": "Template" },
+  "description": { "ru": "Заготовка расширения Antresol", "en": "A starting point for an Antresol addon" },
+  "version": "0.1.0",
+  "author": "",
+  "homepage": "",
+  "contract": 1,
+  "platforms": {},
+  "permissions": []
+}
