@@ -22,7 +22,7 @@ function Page() {
     api.get<{ name: string }>('hello').then((r) => setName(r.name), () => setFailed(true))
   }, [])
   return (
-    <section style={{ display: 'grid', gap: 'var(--s-4)', padding: 'var(--s-6) 0' }}>
+    <section style={{ display: 'grid', gap: 'var(--s-4)' }}>
       {failed && <ui.Notice tone="destructive">{t('failed')}</ui.Notice>}
       {name !== null && <h1 style={{ font: 'var(--t-large-title)', margin: 0 }}>{t('hello', { name })}</h1>}
     </section>
